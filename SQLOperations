@@ -1,0 +1,72 @@
+package student;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class SQLOperations {
+	public static void main(String[] args) {
+		try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		System.out.println("Driver is loaded");
+		Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/6cse3","root","tiger");
+		System.out.println("Database is connected");
+		Statement st=con.createStatement();
+		int ans=1;
+		do {
+			System.out.println("1. Insert a record");
+			System.out.println("2. Delete a record");
+			System.out.println("3. Update a record");
+			System.out.println("4. Display a record");
+			int eno,age;
+			String ename,query="";
+			System.out.println("Enter your chpice: ");
+			Scanner sc=new Scanner(System.in);
+			int ch=sc.nextInt();
+			switch(ch) {
+			case 1 : System.out.println("Enter employee number: ");
+					 eno=sc.nextInt();
+					 System.out.println("Enter employee name: ");
+					 ename=sc.next();
+					 System.out.println("Enter employee age: ");
+					 age=sc.nextInt();
+					 query="Insert into employee values("+eno+",'"+ename+"',+"+age+")";
+					 st.executeUpdate(query);
+					 System.out.println("Record is inserted successfully");
+					 break;
+			case 2 :System.out.println("Enter employee number: ");
+				    eno=sc.nextInt();
+				    query="delete from employee where eno = "+eno+"";
+				    st.executeUpdate(query);
+				    System.out.println("Record is deleated Successfully");
+				    break;
+			case 3: query="update employee set emane=? where eno=?";
+					PreparedStatement ps=con.prepareStatement(query);
+					System.out.println("Enter employee number: ");
+					eno=sc.nextInt();
+					System.out.println("Enter employee name: ");
+					ename=sc.next();
+					ps.setString(1, ename);
+					ps.setInt(2, eno);
+					ps.executeUpdate();
+					System.out.println("Record is updated successfully. ");
+					break;
+			case 4: ResultSet rs=st.executeQuery("select * from employee");
+					while(rs.next()) {
+						System.out.print(rs.getInt(1)+"\t");
+						System.out.print(rs.getString(2)+"\t");
+						System.out.print(rs.getInt(3));
+						System.out.println();
+					}
+			}
+			System.out.println("Press 1 if you want to exit ");
+			ans=sc.nextInt();
+		}while(ans!=1);
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+	}
+}
