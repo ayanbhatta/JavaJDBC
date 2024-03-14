@@ -1,0 +1,110 @@
+package student;
+//Hierarchy of collection interface
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+
+public class Student {
+	int rollno,sem ,age;
+	String name;
+	float fee;
+	String branch;
+	//Constructor
+	public Student(int r,String n,float fee,String b,int sem,int age) {
+		rollno=r;
+		name=n;
+		this.fee=fee;
+		branch=b;
+		this.sem=sem;
+		this.age=age;
+		
+	}
+	
+	public static void main(String[] args) {
+		//Collection
+		ArrayList s=new ArrayList();
+		s.add(new Student(1,"Ayan",30000,"CSE",6,21));
+		s.add(new Student(2,"Rahul",40000,"CSE",5,20));
+		s.add(new Student(3,"Atul",35000,"ECE",6,19));
+		s.add(new Student(4,"Akhil",50000,"CSE",4,21));
+		
+		//Name comparison
+		System.out.println("Sorting based on name");
+		System.out.println("______________________");
+		Collections.sort(s,new NameComperator());
+		Iterator itr=s.iterator();
+		while(itr.hasNext()) {
+			Student s1=(Student)itr.next();
+			System.out.print(s1.rollno+"\t"+s1.name+"\t"+s1.fee);
+			System.out.print(s1.branch+"\t"+s1.sem+"\t"+s1.age);
+			System.out.println();
+		}
+		
+		//Age comparison
+		System.out.println("Sorting based on age");
+		System.out.println("______________________");
+		Collections.sort(s,new AgeComperator());
+		itr=s.iterator();
+		while(itr.hasNext()) {
+			Student s1=(Student)itr.next();
+			System.out.print(s1.rollno+"\t"+s1.name+"\t"+s1.fee);
+			System.out.print(s1.branch+"\t"+s1.sem+"\t"+s1.age);
+			System.out.println();
+		}
+		
+		//Fee comparison
+		System.out.println("Sorting based on Fees");
+		System.out.println("______________________");
+		Collections.sort(s,new FeeComperator());
+		itr=s.iterator();
+		while(itr.hasNext()) {
+			Student s1=(Student)itr.next();
+			System.out.print(s1.rollno+"\t"+s1.name+"\t"+s1.fee);
+			System.out.print(s1.branch+"\t"+s1.sem+"\t"+s1.age);
+			System.out.println();
+		}
+	}
+	
+}
+//Comparing of Name
+class NameComperator implements Comparator{
+	public int compare(Object o1,Object o2) {
+		Student s1=(Student)o1;
+		Student s2=(Student)o2;
+		return s1.name.compareTo(s2.name);
+		
+		
+	}
+}
+//Comparing the age
+class AgeComperator implements Comparator{
+	public int compare(Object o1,Object o2) {
+		Student s1=(Student)o1;
+		Student s2=(Student)o2;
+		if(s1.age==s2.age)
+			return 0;
+		else if(s1.age>s2.age)
+			return 1;
+		else
+			return -1;
+		
+		
+	}
+}
+//Comparing the fee
+class FeeComperator implements Comparator{
+	public int compare(Object o1,Object o2) {
+		Student s1=(Student)o1;
+		Student s2=(Student)o2;
+		if(s1.fee==s2.fee)
+			return 0;
+		else if(s1.fee>s2.fee)
+			return 1;
+		else
+			return -1;
+		
+		
+	}
+}
+
